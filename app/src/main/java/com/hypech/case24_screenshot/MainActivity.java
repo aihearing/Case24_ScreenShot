@@ -3,6 +3,7 @@ package com.hypech.case24_screenshot;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.app.Activity;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,11 +59,58 @@ public class MainActivity extends AppCompatActivity {
         Log.e("ddd", "ok");
     }
 
-    public void click_btn2(View v) {
-        int i = 1;
+    public void click_save_share(View v) {
+        View view = this.getWindow().getDecorView();
+        view.setDrawingCacheEnabled(true);
+        Bitmap bitmap = view.getDrawingCache();
+        saveImageToGallery(bitmap, this);
+
+//        BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+  //      Bitmap bitmap = bitmapDrawable.getBitmap();
+        shareImageandText(bitmap);
     }
 
-    public void click_btn3(View v) {
+    private void shareImageandText(Bitmap bitmap) {
+        Uri uri = getmageToShare(bitmap);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+
+        // putting uri of image to be shared
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+
+        // adding text to share
+        intent.putExtra(Intent.EXTRA_TEXT, "Sharing Image");
+
+        // Add subject Here
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+
+        // setting type to image
+        intent.setType("image/png");
+
+        // calling startactivity() to share
+        startActivity(Intent.createChooser(intent, "Share Via"));
+    }
+
+    // Retrieving the url to share
+    private Uri getmageToShare(Bitmap bitmap) {
+        File imagefolder = new File(getCacheDir(), "images");
+        Uri uri = null;
+        try {
+            imagefolder.mkdirs();
+            File file = new File(imagefolder, "shared_image.png");
+            FileOutputStream outputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            uri = FileProvider.getUriForFile(this, "com.hypech2.fileProvider", file);
+        } catch (Exception e) {
+            Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        return uri;
+    }
+
+
+
+    public void click_save_screenshot(View v) {
         View view = this.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         Bitmap bitmap = view.getDrawingCache();
@@ -75,9 +125,6 @@ public class MainActivity extends AppCompatActivity {
     private static void saveImageToGallery(Bitmap bmp, Activity context) {
         File appDir = new File(getDCIM());
         if (!appDir.exists()) appDir.mkdir();
-
-//        Date now = new Date();
-//        android.text.format.DateFormat.format("yyyy-MM-dd", now);
 
         String date = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss").format(new Date());
 
