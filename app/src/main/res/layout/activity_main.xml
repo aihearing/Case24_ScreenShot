@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Screenshot and show"
-        android:onClick="click_btn"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        android:onClick="click_ss_show"
+        app:layout_constraintBottom_toTopOf="@+id/image_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/image_view"
         android:layout_width="412dp"
         android:layout_height="375dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,9 +30,9 @@
         android:id="@+id/button_save_share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="click_save_share"
+        android:onClick="click_ss_share"
         android:text="Save and Share"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintBottom_toTopOf="@+id/image_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn" />
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="44dp"
-        android:onClick="click_save_screenshot"
+        android:onClick="click_ss_save"
         android:text="Save Screenshot"
         app:layout_constraintBottom_toTopOf="@+id/btn"
         app:layout_constraintEnd_toEndOf="parent"
