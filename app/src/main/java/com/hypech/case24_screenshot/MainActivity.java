@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 //        Date now = new Date();
 //        android.text.format.DateFormat.format("yyyy-MM-dd", now);
 
-        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String date = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss").format(new Date());
 
         String fileName = "sv" + date + ".jpg";
         File file = new File(appDir, fileName);
